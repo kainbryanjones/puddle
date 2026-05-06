@@ -11,7 +11,6 @@ const FONT_SIZE = 16;
 const TEXT_COLOR = "#f8f9fa";
 const OUTLINE_WIDTH = FONT_SIZE * 0.04;
 const TEXT_OPACITY = 0.1;
-const FADE_PERIOD = 60;
 const WOBBLE_MULTIPLIER = 0.5;
 
 export const BackgroundText = ({kicksRef}: {
@@ -49,8 +48,11 @@ export const BackgroundText = ({kicksRef}: {
 
         const text = textRef.current;
         if (text) {
-            const phase = (now % FADE_PERIOD) / FADE_PERIOD;
-            const opacity = TEXT_OPACITY * (1 - phase);
+            const horizDist = Math.hypot(camera.position.x, camera.position.z);
+            const span = env.VITE_ORBIT_RADIUS_MAX - env.VITE_ORBIT_RADIUS_MIN;
+            const t = span === 0 ? 0 : (horizDist - env.VITE_ORBIT_RADIUS_MIN) / span;
+            const proximity = 1 - Math.min(1, Math.max(0, t));
+            const opacity = TEXT_OPACITY * proximity;
             text.fillOpacity = opacity;
             text.outlineOpacity = opacity;
         }
