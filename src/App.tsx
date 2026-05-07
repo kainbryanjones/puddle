@@ -228,16 +228,13 @@ const App = () => {
             </Suspense>
         </Canvas>;
     } else {
-        return <div style={{
-            display: "flex",
-            height: "100vh",
-            width: "100vw",
-            alignItems: "center",
-            justifyContent: "center",
-        }}>
-            <button disabled={loading || !toneLoaded}
-                    children={loading || !toneLoaded ? "loading..." : "start"}
-                    onClick={start}/>
+        const isLoading = loading || !toneLoaded;
+        return <div className="flex h-screen w-screen items-center justify-center bg-neutral-950">
+            <button disabled={isLoading}
+                    onClick={start}
+                    className="rounded-full bg-white px-10 py-3 text-lg font-medium tracking-wide text-neutral-900 shadow-lg transition hover:scale-105 hover:bg-neutral-100 active:scale-95 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:scale-100">
+                {isLoading ? "loading..." : "start"}
+            </button>
         </div>;
     }
 };
