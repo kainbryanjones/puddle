@@ -45,9 +45,9 @@ const parser = z.object({
     VITE_SPAWN_INTERVAL: z.coerce.number().int().catch(100),
     VITE_SPAWN_BATCH_MIN: z.coerce.number().int().catch(0),
     VITE_SPAWN_BATCH_MAX: z.coerce.number().int().catch(1),
-    VITE_SPAWN_SPREAD_X: z.coerce.number().catch(0.8),
+    VITE_SPAWN_SPREAD_X: z.coerce.number().catch(2),
     VITE_SPAWN_SPREAD_Y: z.coerce.number().catch(0.4),
-    VITE_SPAWN_SPREAD_Z: z.coerce.number().catch(0.8),
+    VITE_SPAWN_SPREAD_Z: z.coerce.number().catch(2),
     VITE_SPAWN_HEIGHT: z.coerce.number().catch(5),
 
     // Visual - sphere

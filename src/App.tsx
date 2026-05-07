@@ -48,6 +48,7 @@ const pickShape = (): Shape => {
 type ShapeState = {
     id: number,
     position: [number, number, number],
+    rotation: [number, number, number],
     color: string,
     scale: number,
     octave: number,
@@ -99,6 +100,7 @@ const ShapeBody = ({s, floorColorQueueRef, wobbleKicksRef, onFall}: {
                    }}
                    collisionGroups={SPHERE_GROUPS}
                    position={s.position}
+                   rotation={s.rotation}
                    colliders={false}
                    ccd>
             <mesh geometry={geometry}
@@ -161,6 +163,11 @@ const App = () => {
                         (Math.random() - 0.5) * env.VITE_SPAWN_SPREAD_X,
                         env.VITE_SPAWN_HEIGHT + Math.random() * env.VITE_SPAWN_SPREAD_Y,
                         (Math.random() - 0.5) * env.VITE_SPAWN_SPREAD_Z,
+                    ] as [number, number, number],
+                    rotation: [
+                        Math.random() * Math.PI * 2,
+                        Math.random() * Math.PI * 2,
+                        Math.random() * Math.PI * 2,
                     ] as [number, number, number],
                     color: randomColor(),
                     scale: octaveToScale(octave),
