@@ -21,7 +21,7 @@ const limiter = new Tone.Compressor({
     knee: env.VITE_COMPRESSOR_KNEE,
 });
 
-const makeSynth = (type: "triangle" | "square" | "sawtooth") => {
+const makeSynth = (type: "sine" | "square" | "sawtooth") => {
     const s = new Tone.PolySynth(Tone.Synth, {
         oscillator: {type},
         envelope: {
@@ -37,14 +37,14 @@ const makeSynth = (type: "triangle" | "square" | "sawtooth") => {
     return s;
 };
 
-const synth = makeSynth("triangle");
+const synth = makeSynth("sine");
 const squareSynth = makeSynth("square");
 const sawSynth = makeSynth("sawtooth");
 void reverb.generate();
 
-export type Wave = "triangle" | "square" | "sawtooth";
+export type Wave = "sine" | "square" | "sawtooth";
 const synthsByWave: Record<Wave, Tone.PolySynth> = {
-    triangle: synth,
+    sine: synth,
     square: squareSynth,
     sawtooth: sawSynth,
 };
@@ -93,7 +93,7 @@ export const playBassNote = () => {
     bassSynth.triggerAttackRelease(note + env.VITE_BASS_OCTAVE.toString(), "2n", Tone.now());
 };
 
-const playSineWave = (octave: number, wave: Wave = "triangle") => {
+const playSineWave = (octave: number, wave: Wave = "sine") => {
     const now = Tone.now();
     const note = scale[Math.floor(Math.random() * scale.length)];
     const s = synthsByWave[wave];

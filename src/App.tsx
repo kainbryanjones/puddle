@@ -84,7 +84,7 @@ const ShapeBody = ({s, floorColorQueueRef, wobbleKicksRef, onFall}: {
                            s.octave,
                            s.shape === "cube" ? "square"
                                : s.shape === "pyramid" ? "sawtooth"
-                               : "triangle",
+                               : "sine",
                        );
                        if (floorColorQueueRef.current.length < env.VITE_COLOR_QUEUE_MAX) {
                            floorColorQueueRef.current.push(s.color);
