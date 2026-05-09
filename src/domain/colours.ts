@@ -1,5 +1,5 @@
-export const OPEN_COLOR = {
-    GRAY: ["#f8f9fa", "#f1f3f5", "#e9ecef", "#dee2e6", "#ced4da", "#adb5bd", "#868e96", "#495057", "#343a40", "#212529"],
+export const OPEN_COLOUR = {
+    GREY: ["#f8f9fa", "#f1f3f5", "#e9ecef", "#dee2e6", "#ced4da", "#adb5bd", "#868e96", "#495057", "#343a40", "#212529"],
     RED: ["#fff5f5", "#ffe3e3", "#ffc9c9", "#ffa8a8", "#ff8787", "#ff6b6b", "#fa5252", "#f03e3e", "#e03131", "#c92a2a"],
     PINK: ["#fff0f6", "#ffdeeb", "#fcc2d7", "#faa2c1", "#f783ac", "#f06595", "#e64980", "#d6336c", "#c2255c", "#a61e4d"],
     GRAPE: ["#f8f0fc", "#f3d9fa", "#eebefa", "#e599f7", "#da77f2", "#cc5de8", "#be4bdb", "#ae3ec9", "#9c36b5", "#862e9c"],
@@ -14,6 +14,6 @@ export const OPEN_COLOR = {
     ORANGE: ["#fff4e6", "#ffe8cc", "#ffd8a8", "#ffc078", "#ffa94d", "#ff922b", "#fd7e14", "#f76707", "#e8590c", "#d9480f"],
 } as const
 
-export const OPEN_COLOR_FLAT: string[] = Object.values(OPEN_COLOR).flatMap(shades => shades.slice(0, 6))
-export const OPEN_COLOR_LIGHT: string[] = Object.values(OPEN_COLOR).flatMap(shades => shades.slice(0, 4))
-export const OPEN_COLOR_DARK: string[] = Object.values(OPEN_COLOR).flatMap(shades => shades.slice(4, 6))
+export const OPEN_COLOUR_FLAT: string[] = Object.values(OPEN_COLOUR).flatMap(shades => shades.slice(0, 6))
+export const OPEN_COLOUR_LIGHT: string[] = Object.values(OPEN_COLOUR).flatMap(shades => shades.slice(0, 4))
+export const OPEN_COLOUR_DARK: string[] = Object.values(OPEN_COLOUR).flatMap(shades => shades.slice(4, 6))

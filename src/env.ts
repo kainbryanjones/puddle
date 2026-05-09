@@ -63,7 +63,7 @@ const parser = z.object({
 
     // Visual - floor
     VITE_FLOOR_RESTITUTION: z.coerce.number().catch(2),
-    VITE_FLOOR_INITIAL_COLOR: z.string().catch("#eebefa"),
+    VITE_FLOOR_INITIAL_COLOUR: z.string().catch("#eebefa"),
     VITE_FLOOR_TILT: z.coerce.number().catch(Math.PI / 6),
     VITE_FLOOR_PERIOD: z.coerce.number().catch(120),
     VITE_FLOOR_AMPLITUDE: z.coerce.number().catch(2 * Math.PI),
@@ -87,9 +87,9 @@ const parser = z.object({
     VITE_ORBIT_AMPLITUDE: z.coerce.number().catch(0),
     VITE_ORBIT_START_ANGLE: z.coerce.number().catch(Math.PI / 4),
 
-    // Color
-    VITE_COLOR_QUEUE_MAX: z.coerce.number().int().catch(20),
-    VITE_COLOR_TRANSITION_DURATION: z.coerce.number().catch(0.1),
+    // Colour
+    VITE_COLOUR_QUEUE_MAX: z.coerce.number().int().catch(20),
+    VITE_COLOUR_TRANSITION_DURATION: z.coerce.number().catch(0.1),
 });
 
 const env = parser.parse(import.meta.env);

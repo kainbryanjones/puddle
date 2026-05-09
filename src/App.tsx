@@ -5,12 +5,12 @@ import {BallCollider, ConeCollider, CuboidCollider, interactionGroups, Physics, 
 import {Box} from "@react-three/drei";
 import playSineWave from "@/domain/playSineWave.ts";
 import getRandomInt from "@/domain/getRandomInt.ts";
-import {OPEN_COLOR_DARK, OPEN_COLOR_FLAT, OPEN_COLOR_LIGHT} from "@/domain/colors.ts";
+import {OPEN_COLOUR_DARK, OPEN_COLOUR_FLAT, OPEN_COLOUR_LIGHT} from "@/domain/colours.ts";
 import {useAudioStart} from "@/hooks/useAudioStart.ts";
 import {useToneContext} from "@/hooks/useToneContext.ts";
 import {CameraOrbit} from "@/components/CameraOrbit.tsx";
 import {FloorSpinner} from "@/components/FloorSpinner.tsx";
-import {FloorColorTransition} from "@/components/FloorColorTransition.tsx";
+import {FloorColourTransition} from "@/components/FloorColourTransition.tsx";
 import {BackgroundText} from "@/components/BackgroundText.tsx";
 import env from "@/env.ts";
 
@@ -30,10 +30,10 @@ const PYRAMID_GEOMETRY = new THREE.ConeGeometry(
     4,
 );
 const SPHERE_MATERIALS: Record<string, THREE.MeshStandardMaterial> = Object.fromEntries(
-    OPEN_COLOR_FLAT.map(c => [c, new THREE.MeshStandardMaterial({color: c})]),
+    OPEN_COLOUR_FLAT.map(c => [c, new THREE.MeshStandardMaterial({color: c})]),
 );
-const randomColor = () => {
-    const pool = Math.random() < 0.98 ? OPEN_COLOR_LIGHT : OPEN_COLOR_DARK;
+const randomColour = () => {
+    const pool = Math.random() < 0.98 ? OPEN_COLOUR_LIGHT : OPEN_COLOUR_DARK;
     return pool[Math.floor(Math.random() * pool.length)];
 };
 
@@ -49,7 +49,7 @@ type ShapeState = {
     id: number,
     position: [number, number, number],
     rotation: [number, number, number],
-    color: string,
+    colour: string,
     scale: number,
     octave: number,
     shape: Shape,
@@ -57,9 +57,9 @@ type ShapeState = {
 
 type WobbleKick = {t: number, ax: number, az: number};
 
-const ShapeBody = ({s, floorColorQueueRef, wobbleKicksRef, onFall}: {
+const ShapeBody = ({s, floorColourQueueRef, wobbleKicksRef, onFall}: {
     s: ShapeState,
-    floorColorQueueRef: RefObject<string[]>,
+    floorColourQueueRef: RefObject<string[]>,
     wobbleKicksRef: RefObject<WobbleKick[]>,
     onFall: (id: number) => void,
 }) => {
@@ -86,8 +86,8 @@ const ShapeBody = ({s, floorColorQueueRef, wobbleKicksRef, onFall}: {
                                : s.shape === "pyramid" ? "sawtooth"
                                : "sine",
                        );
-                       if (floorColorQueueRef.current.length < env.VITE_COLOR_QUEUE_MAX) {
-                           floorColorQueueRef.current.push(s.color);
+                       if (floorColourQueueRef.current.length < env.VITE_COLOUR_QUEUE_MAX) {
+                           floorColourQueueRef.current.push(s.colour);
                        }
                        const kicks = wobbleKicksRef.current;
                        if (kicks.length < env.VITE_WOBBLE_QUEUE_MAX) {
@@ -104,7 +104,7 @@ const ShapeBody = ({s, floorColorQueueRef, wobbleKicksRef, onFall}: {
                    colliders={false}
                    ccd>
             <mesh geometry={geometry}
-                  material={SPHERE_MATERIALS[s.color]}
+                  material={SPHERE_MATERIALS[s.colour]}
                   scale={s.scale}/>
             {s.shape === "sphere" && <BallCollider args={[r]}/>}
             {s.shape === "cube" && <CuboidCollider args={[r, r, r]}/>}
@@ -131,7 +131,7 @@ const App = () => {
     const [spheres, setSpheres] = useState<ShapeState[]>([]);
     const [focused, setFocused] = useState(() => document.hasFocus());
     const floorMaterialRef = useRef<THREE.MeshStandardMaterial>(null);
-    const floorColorQueueRef = useRef<string[]>([]);
+    const floorColourQueueRef = useRef<string[]>([]);
     const floorBodyRef = useRef<RapierRigidBody>(null);
     const wobbleKicksRef = useRef<WobbleKick[]>([]);
 
@@ -169,7 +169,7 @@ const App = () => {
                         Math.random() * Math.PI * 2,
                         Math.random() * Math.PI * 2,
                     ] as [number, number, number],
-                    color: randomColor(),
+                    colour: randomColour(),
                     scale: octaveToScale(octave),
                     octave,
                     shape: pickShape(),
@@ -210,7 +210,7 @@ const App = () => {
                     {spheres.map(s => (
                         <ShapeBody key={s.id}
                                    s={s}
-                                   floorColorQueueRef={floorColorQueueRef}
+                                   floorColourQueueRef={floorColourQueueRef}
                                    wobbleKicksRef={wobbleKicksRef}
                                    onFall={handleFall}/>
                     ))}
@@ -219,11 +219,11 @@ const App = () => {
                                collisionGroups={FLOOR_GROUPS}
                                restitution={env.VITE_FLOOR_RESTITUTION}>
                         <Box args={[2, 0.1, 2]}>
-                            <meshStandardMaterial ref={floorMaterialRef} color={env.VITE_FLOOR_INITIAL_COLOR}/>
+                            <meshStandardMaterial ref={floorMaterialRef} color={env.VITE_FLOOR_INITIAL_COLOUR}/>
                         </Box>
                     </RigidBody>
                     <FloorSpinner bodyRef={floorBodyRef} kicksRef={wobbleKicksRef}/>
-                    <FloorColorTransition materialRef={floorMaterialRef} queueRef={floorColorQueueRef}/>
+                    <FloorColourTransition materialRef={floorMaterialRef} queueRef={floorColourQueueRef}/>
                 </Physics>
             </Suspense>
         </Canvas>;
