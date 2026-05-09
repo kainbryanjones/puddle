@@ -93,7 +93,7 @@ const parser = z.object({
 
     // UI
     VITE_START_OVERLAY_BLUR_PX: z.coerce.number().catch(4),
-    VITE_BUTTON_WOBBLE_PX: z.coerce.number().catch(1),
+    VITE_BUTTON_WOBBLE_PX: z.coerce.number().catch(0.5),
 });
 
 const env = parser.parse(import.meta.env);

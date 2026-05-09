@@ -5,7 +5,7 @@ import {BallCollider, ConeCollider, CuboidCollider, interactionGroups, Physics, 
 import {Box} from "@react-three/drei";
 import playSineWave from "@/domain/playSineWave.ts";
 import getRandomInt from "@/domain/getRandomInt.ts";
-import {OPEN_COLOUR_DARK, OPEN_COLOUR_FLAT, OPEN_COLOUR_LIGHT} from "@/domain/colours.ts";
+import {OPEN_COLOUR, OPEN_COLOUR_DARK, OPEN_COLOUR_FLAT, OPEN_COLOUR_LIGHT} from "@/domain/colours.ts";
 import {useAudioStart} from "@/hooks/useAudioStart.ts";
 import {useToneContext} from "@/hooks/useToneContext.ts";
 import {CameraOrbit} from "@/components/CameraOrbit.tsx";
@@ -264,7 +264,8 @@ const App = () => {
             <div ref={buttonWobbleRef} className="will-change-transform">
                 <button disabled={isLoading}
                         onClick={start}
-                        className="cursor-pointer rounded-full bg-white px-10 py-3 text-lg font-medium tracking-wide text-neutral-900 shadow-[0_30px_60px_-10px_rgba(0,0,0,0.75),0_8px_20px_-4px_rgba(0,0,0,0.5)] transition hover:scale-105 hover:bg-neutral-100 active:scale-95 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:scale-100">
+                        style={{color: OPEN_COLOUR.GREY[2]}}
+                        className="cursor-pointer rounded-full bg-white/20 px-10 py-3 text-2xl font-bold uppercase tracking-wide ring-1 ring-white/30 backdrop-blur-xl shadow-[0_30px_60px_-10px_rgba(0,0,0,0.75),0_8px_20px_-4px_rgba(0,0,0,0.5)] transition hover:scale-105 hover:bg-white/30 active:scale-95 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:scale-100">
                     {isLoading ? "loading..." : "start"}
                 </button>
             </div>
