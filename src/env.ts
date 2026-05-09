@@ -90,6 +90,10 @@ const parser = z.object({
     // Colour
     VITE_COLOUR_QUEUE_MAX: z.coerce.number().int().catch(20),
     VITE_COLOUR_TRANSITION_DURATION: z.coerce.number().catch(0.1),
+
+    // UI
+    VITE_START_OVERLAY_BLUR_PX: z.coerce.number().catch(4),
+    VITE_BUTTON_WOBBLE_PX: z.coerce.number().catch(1),
 });
 
 const env = parser.parse(import.meta.env);

@@ -83,6 +83,7 @@ const bassSynth = new Tone.Synth({
         decay: env.VITE_BASS_DECAY,
         sustain: env.VITE_BASS_SUSTAIN,
         release: env.VITE_BASS_RELEASE,
+        releaseCurve: "linear",
     },
 });
 bassSynth.chain(bassReverb, Tone.getDestination());

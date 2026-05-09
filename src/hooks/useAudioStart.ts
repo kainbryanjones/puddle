@@ -14,6 +14,13 @@ export const useAudioStart = () => {
     const start = useCallback(async () => {
         loading.setTrue();
         await Tone.start();
+        const destination = Tone.getDestination();
+        const targetDb = destination.volume.value;
+        destination.volume.value = -60;
+        destination.volume.linearRampTo(targetDb, 10);
+        const rampFilter = new Tone.Filter({frequency: 300, type: "lowpass"});
+        destination.chain(rampFilter);
+        rampFilter.frequency.rampTo(Tone.getContext().sampleRate / 2, 10);
         const player = new Tone.Player({
             url: "/sfx/enter.mp3",
             autostart: true,

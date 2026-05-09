@@ -134,9 +134,36 @@ const App = () => {
     const floorColourQueueRef = useRef<string[]>([]);
     const floorBodyRef = useRef<RapierRigidBody>(null);
     const wobbleKicksRef = useRef<WobbleKick[]>([]);
+    const buttonWobbleRef = useRef<HTMLDivElement>(null);
 
     const handleFall = useCallback((id: number) => {
         setSpheres(prev => prev.filter(s => s.id !== id));
+    }, []);
+
+    useEffect(() => {
+        let raf = 0;
+        const tick = () => {
+            const node = buttonWobbleRef.current;
+            if (node) {
+                const now = performance.now() / 1000;
+                const cutoff = env.VITE_WOBBLE_DECAY * 4;
+                let wobbleX = 0;
+                let wobbleZ = 0;
+                for (const k of wobbleKicksRef.current) {
+                    const age = now - k.t;
+                    if (age > cutoff) continue;
+                    const envelope = Math.exp(-age / env.VITE_WOBBLE_DECAY);
+                    const osc = Math.sin(2 * Math.PI * env.VITE_WOBBLE_FREQUENCY * age);
+                    wobbleX += k.ax * envelope * osc;
+                    wobbleZ += k.az * envelope * osc;
+                }
+                const px = env.VITE_BUTTON_WOBBLE_PX;
+                node.style.transform = `translate(${wobbleX * px}px, ${wobbleZ * px}px)`;
+            }
+            raf = requestAnimationFrame(tick);
+        };
+        raf = requestAnimationFrame(tick);
+        return () => cancelAnimationFrame(raf);
     }, []);
 
     useEffect(() => {
@@ -151,7 +178,7 @@ const App = () => {
     }, []);
 
     useEffect(() => {
-        if (!started || !toneLoaded || !focused) return;
+        if (!focused) return;
         const interval = setInterval(() => {
             const time = Date.now();
             const batch = getRandomInt(env.VITE_SPAWN_BATCH_MIN, env.VITE_SPAWN_BATCH_MAX);
@@ -183,10 +210,12 @@ const App = () => {
             });
         }, env.VITE_SPAWN_INTERVAL);
         return () => clearInterval(interval);
-    }, [started, toneLoaded, focused]);
+    }, [focused]);
 
-    if (started && toneLoaded) {
-        return <Canvas
+    const isLoading = loading || !toneLoaded;
+    const overlayHidden = started && toneLoaded;
+    return <>
+        <Canvas
             camera={{
                 position: [2, 2, 2],
             }}
@@ -226,16 +255,20 @@ const App = () => {
                     <FloorColourTransition materialRef={floorMaterialRef} queueRef={floorColourQueueRef}/>
                 </Physics>
             </Suspense>
-        </Canvas>;
-    } else {
-        const isLoading = loading || !toneLoaded;
-        return <div className="flex h-screen w-screen items-center justify-center bg-neutral-950">
-            <button disabled={isLoading}
-                    onClick={start}
-                    className="rounded-full bg-white px-10 py-3 text-lg font-medium tracking-wide text-neutral-900 shadow-lg transition hover:scale-105 hover:bg-neutral-100 active:scale-95 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:scale-100">
-                {isLoading ? "loading..." : "start"}
-            </button>
-        </div>;
-    }
+        </Canvas>
+        <div style={{
+                 backdropFilter: `blur(${env.VITE_START_OVERLAY_BLUR_PX}px)`,
+                 WebkitBackdropFilter: `blur(${env.VITE_START_OVERLAY_BLUR_PX}px)`,
+             }}
+             className={`fixed inset-0 flex items-center justify-center transition-opacity duration-700 ${overlayHidden ? "pointer-events-none opacity-0" : "opacity-100"}`}>
+            <div ref={buttonWobbleRef} className="will-change-transform">
+                <button disabled={isLoading}
+                        onClick={start}
+                        className="cursor-pointer rounded-full bg-white px-10 py-3 text-lg font-medium tracking-wide text-neutral-900 shadow-[0_30px_60px_-10px_rgba(0,0,0,0.75),0_8px_20px_-4px_rgba(0,0,0,0.5)] transition hover:scale-105 hover:bg-neutral-100 active:scale-95 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:scale-100">
+                    {isLoading ? "loading..." : "start"}
+                </button>
+            </div>
+        </div>
+    </>;
 };
 export default App;
